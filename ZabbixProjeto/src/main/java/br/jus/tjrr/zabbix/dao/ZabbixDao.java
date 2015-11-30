@@ -15,16 +15,17 @@ import br.jus.tjrr.zabbix.utils.RequestBuilder;
 
 public class ZabbixDao {
 
-	// final String url = "http://10.50.1.16/api_jsonrpc.php";
+	//private final String url = "http://10.50.1.16/api_jsonrpc.php";
 	private final String url = "http://200.222.41.3:1502/api_jsonrpc.php";
 
-	private final String user = "";
-	private final String senha = "";
+	//private final String user = "";
+	//private final String senha = "";
 	DefaultZabbixApi zabbixApi = new DefaultZabbixApi(url);
 
 	public ZabbixDao() {	
 		this.zabbixApi.init();
-		this.zabbixApi.login(user, senha);
+		//this.zabbixApi.login(user, senha);
+		this.zabbixApi.login();
 
 	}
 
