@@ -1,4 +1,4 @@
-package br.jus.tjrr.zabbix.dao;
+package br.jus.tjrr.zabbix.utils;
 
 import com.alibaba.fastjson.JSONObject;
 
