@@ -4,6 +4,13 @@ public class Host {
 	
 	
 	private String nomeHost;
+	private String hostId;
+	public String getHostId() {
+		return hostId;
+	}
+	public void setHostId(String hostId) {
+		this.hostId = hostId;
+	}
 	private String grupoHost;
 	
 	

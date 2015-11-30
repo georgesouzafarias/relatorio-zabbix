@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import br.jus.tjrr.zabbix.model.GrupoHost;
+import br.jus.tjrr.zabbix.model.Host;
 import br.jus.tjrr.zabbix.utils.DefaultZabbixApi;
 import br.jus.tjrr.zabbix.utils.Request;
 import br.jus.tjrr.zabbix.utils.RequestBuilder;
@@ -50,22 +51,33 @@ public class ZabbixDao {
 			listaGrupos.add(grupo);
 		}
 
-		zabbixApi.destory();
+	
 		return listaGrupos;
 
 	}
 	
 	
-	public ArrayList<String> listHost(String groupids) {
-		ArrayList<String> listaHost = new ArrayList<>();
-		Request getRequest = RequestBuilder.newBuilder().method("host.get").paramEntry("groupids", groupids)
+	public ArrayList<Host> listHost(String groupid) {
+		
+		ArrayList<Host> listaHost = new ArrayList<>();
+		
+		Request getRequest = RequestBuilder.newBuilder().method("host.get").paramEntry("groupids", groupid)
 				.paramEntry("monitored_hosts", true).build();
+		
 		JSONObject getResponse = zabbixApi.call(getRequest);
+		
 		JSONArray resultado = getResponse.getJSONArray("result");
 
+		
 		for (int i = 0; i < resultado.size(); i++) {
+			Host host = new Host();
 			JSONObject item = (JSONObject) resultado.get(i);
-			listaHost.add((String) item.get("name"));
+			
+			host.setNomeHost((String) item.get("name"));
+			host.setHostId((String) item.get("hostid"));			
+			host.setGrupoHost(groupid);			
+			
+			listaHost.add(host);
 		}
 
 		zabbixApi.destory();
@@ -73,4 +85,6 @@ public class ZabbixDao {
 
 	}
 
+	
+	
 }
