@@ -1,8 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html xmlns="http://www.w3.org/1999/xhtml"  
-    xmlns:h="http://java.sun.com/jsf/html"  
-    xmlns:f="http://java.sun.com/jsf/core"  
-    xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<title>Relatorio Zabbix</title>
@@ -10,34 +10,33 @@
 
 
 <h:body>
- <h1> FOOOOIII</h1>
+	<h1>FOOOOIII</h1>
 
-	<!-- 
+
 	<form action=" <c:url value='/produto/adiciona'/>" method="post">
 
 
 		<select>
 			<c:forEach items="${grupoLista}" var="grupo">
 
-				<option value="${grupo}">${grupo}</option>
+				<option value="${grupo.idGrupo}">${grupo.nomeGrupo}</option>
 				<br />
 			</c:forEach>
 
 			<select>
 				<c:forEach items="${hostLista}" var="host">
 
-					<option value="${host}">${host}</ option>
-					<br />
+					<option value="${host}">${host}</option> <br />
 				</c:forEach>
-		</select> 
+		</select>
 
 
 			<input type=>
 			<input type="submit" value="adicionar">
 	</form>
-	
-	-->
 
+
+	<!-- 
 	<p:fieldset legend="objetos">
 		<p:panelGrid columns="2">
 			<h:outputLabel value="Nome do Grupo"></h:outputLabel>
@@ -57,7 +56,7 @@
 	</p:fieldset>
 
 
-
+ -->
 
 </h:body>
 </html>

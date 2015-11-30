@@ -7,6 +7,7 @@ import javax.enterprise.context.RequestScoped;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import br.jus.tjrr.zabbix.model.GrupoHost;
 import br.jus.tjrr.zabbix.utils.DefaultZabbixApi;
 import br.jus.tjrr.zabbix.utils.Request;
 import br.jus.tjrr.zabbix.utils.RequestBuilder;
@@ -28,16 +29,25 @@ public class ZabbixDao {
 
 	@RequestScoped	
 
-	public ArrayList<String> listGrupos() {
-		ArrayList<String> listaGrupos = new ArrayList<>();
+	public ArrayList<GrupoHost> listGrupos() {
+		ArrayList<GrupoHost> listaGrupos = new ArrayList<>();
+		
 		Request getRequest = RequestBuilder.newBuilder().method("hostgroup.get").paramEntry("monitored_hosts", true)
 				.paramEntry("real_hosts", true).build();
+		
 		JSONObject getResponse = zabbixApi.call(getRequest);
+		
 		JSONArray resultado = getResponse.getJSONArray("result");
 
 		for (int i = 0; i < resultado.size(); i++) {
+			GrupoHost grupo = new GrupoHost();
+			
 			JSONObject item = (JSONObject) resultado.get(i);
-			listaGrupos.add((String) item.get("name"));
+			
+			grupo.setNomeGrupo((String) item.get("name"));
+								
+			grupo.setIdGrupo((String) item.get("groupid"));			
+			listaGrupos.add(grupo);
 		}
 
 		zabbixApi.destory();

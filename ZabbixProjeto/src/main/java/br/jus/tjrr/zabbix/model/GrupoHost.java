@@ -12,8 +12,8 @@ public class GrupoHost {
 	
 		
 	private String nomeGrupo;
-	private ArrayList<Host> listHost;
-	private int idGrupo;
+	//private ArrayList<Host> listHost;
+	private String idGrupo;
 	
 	
 	/**
@@ -36,23 +36,26 @@ public class GrupoHost {
 	 *  Método para listar os Hosts do Grupo
 	 * @return Um Array de Hots.
 	 */
+	
+	/*
 	public ArrayList<Host> getListHost() {
 		return listHost;
-	}
+	}*/
 	
 	/**Método resposável por adicionar Hosts num Array.
 	 * 
 	 * @param host Recebe um Objeto do Tipo Host. 
 	 */
+	/*
 	public void adicionarHost(Host host) {
 		this.listHost.add(host);
-	}
+	}*/
 	
 	/**
 	 * Método para pegar o ID do grupo
 	 * @return Retorna um Id do Grupo do tipo Inteiro. 
 	 */
-	public int getIdGrupo() {
+	public String getIdGrupo() {
 		return idGrupo;
 	}
 	
@@ -60,7 +63,7 @@ public class GrupoHost {
 	 * Método para setar o ID do Grupo
 	 * @param idGrupo ID do grupo do tipo inteiro.
 	 */
-	public void setIdGrupo(int idGrupo) {
+	public void setIdGrupo(String idGrupo) {
 		this.idGrupo = idGrupo;
 	}
 	
