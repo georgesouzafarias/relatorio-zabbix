@@ -1,62 +1,68 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+<c:import url="/WEB-INF/jsp/header.jsp"></c:import>
 
-<h:head>
-	<title>Relatorio Zabbix</title>
-</h:head>
+<!-- <script src="<c:url value='/js/jquery.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/prototype.js'/>"></script>
+<script type="text/javascript" src="<c:url value='js/bootstrap.js'/>"></script>
+ -->
 
-
-<h:body>
-	<h1>FOOOOIII</h1>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 
 
-	<form action=" <c:url value='/produto/adiciona'/>" method="post">
+<form action=" <c:url value='/produto/adiciona'/>" method="post">
 
 
-		<select>
+	<label for="grupo" class="text-center"> Selecione um Grupo</label>
+
+
+	<div>
+
+
+		<select id="idgrupo" class=".selectpicker">
 			<c:forEach items="${grupoLista}" var="grupo">
-
 				<option value="${grupo.idGrupo}">${grupo.nomeGrupo}</option>
 				<br />
 			</c:forEach>
 
-			<select>
-				<c:forEach items="${hostLista}" var="host">
-
-					<option value="${host}">${host}</option> <br />
-				</c:forEach>
 		</select>
 
+	</div>
 
-			<input type=>
-			<input type="submit" value="adicionar">
-	</form>
+	<div>
+		<select class=".selectpicker" id="host"></select>
+	</div>
 
-
-	<!-- 
-	<p:fieldset legend="objetos">
-		<p:panelGrid columns="2">
-			<h:outputLabel value="Nome do Grupo"></h:outputLabel>
-			<c:forEach items="${grupoLista}" var="grupo">
-				<p:selectOneListbox id="basic" value="${grupo}">
-					<f:selectItem itemLabel="Option 1" itemValue="1" />
-					<f:selectItem itemLabel="Option 2" itemValue="2" />
-					<f:selectItem itemLabel="Option 3" itemValue="3" />
-
-				</p:selectOneListbox>
-			</c:forEach>
-
-			<h:outputLabel value="Nome do Host"></h:outputLabel>
-
-		</p:panelGrid>
-
-	</p:fieldset>
+	<div>
+		<input type="submit" value="adicionar">
+	</div>
 
 
- -->
+</form>
 
-</h:body>
-</html>
+<h1 id="texto"></h1>
+
+
+
+<script>
+	$('#idgrupo').on("change", function() {
+		var id = document.getElementById("idgrupo").value;
+		var uri = "http://www.casa.com.br:8080/zabbixprojeto/host?grupoid=";
+		var url = uri.concat(id);
+		var appenddata = '<option>Selecione o Host</option>';
+		$.ajax({
+			url : url,
+			dataType : "json",
+			success : function(retorno) {
+				$.each(retorno.list, function() {
+					var host = this;					
+					appenddata += "<option value=\"" + host.hostId + "\">"	+ host.nomeHost + " </option>";
+				});
+				$('#host').html(appenddata);}
+		});
+	});
+</script>
+
+
+
+
+<c:import url="/WEB-INF/jsp/footer.jsp"></c:import>
