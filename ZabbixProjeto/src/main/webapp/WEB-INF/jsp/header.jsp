@@ -4,9 +4,9 @@
 <head>
 <title>Relatório Zabbix</title>
 
-
+<script src="<c:url value='/js/jquery.js'/>"></script>
+<script src="<c:url value='/js/bootstrap-datepicker.js'/>"></script>
 <link href="<c:url value='/css/bootstrap.css'/>" rel="stylesheet" />
-
 
 </head>
 <body>
@@ -16,8 +16,8 @@
 		</ul>
 
 	</nav>
-	<div class="container">
-		<main class="col-sm-8">
+	<div class="container thumbnail jumbotron bg-success">
+		<main class="col-sm-8 thumbnail text-center ">
 	
 		
 		 <!--  Conteudo -->

@@ -1,6 +1,6 @@
 package br.jus.tjrr.zabbix.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**Classe que representará um evento vindo do Zabbix
  * 
@@ -12,12 +12,9 @@ public class Evento {
 	
 	
 	private int idEvento;
-	private Date dataEvento;
-	private Date horaEvento;
-	private String nomeHost;
-	private String nomeGrupoHost;
-	private int duracaoEvento;
-	private String tipoEvento;
+	private Timestamp dataEvento;
+	private Long horaEvento;	
+	private int duracaoEvento;	
 	
 	
 	/**
@@ -41,7 +38,7 @@ public class Evento {
 	 * Metódo que retornará a Data do Evento.
 	 * @return Um Objeto do tipo Date.
 	 */
-	public Date getDataEvento() {
+	public Timestamp getDataEvento() {
 		return dataEvento;
 	}
 	
@@ -49,7 +46,7 @@ public class Evento {
 	 *  Método que seta a Data do Evento.
 	 * @param dataEvento Parametro do tipo Date.
 	 */
-	public void setDataEvento(Date dataEvento) {
+	public void setDataEvento(Timestamp dataEvento) {
 		this.dataEvento = dataEvento;
 	}
 	/**
@@ -57,7 +54,7 @@ public class Evento {
 	 * @return Um objeto do Tipo Date.
 	 */
 	
-	public Date getHoraEvento() {
+	public Long getHoraEvento() {
 		return horaEvento;
 	}
 	/**
@@ -65,26 +62,11 @@ public class Evento {
 	 * @param horaEvento
 	 */
 	
-	public void setHoraEvento(Date horaEvento) {
+	public void setHoraEvento(Long horaEvento) {
 		this.horaEvento = horaEvento;
 	}
 	
-	/**
-	 * Metódo que pega o nome do host do Evento.
-	 * @return Um Objeto do tipo String.
-	 */
-	public String getNomeHost() {
-		return nomeHost;
-	}
-	
-	/**
-	 * Metódo que seta o nome do host do Evento.
-	 * @param host Objeto do tipo String.
-	 */
-	public void setHost(String nomeHost) {
-		this.nomeHost = nomeHost;
-	}
-	
+
 	/**
 	 * Método que retorna a duração do evento em Minutos.
 	 * @return Um a duração do Evento em Minutos.
@@ -101,37 +83,7 @@ public class Evento {
 		this.duracaoEvento = duracaoEvento;
 	}
 	
-	/**
-	 * Método que retorna o tipo do Evento.
-	 * @return Um String.
-	 */
-	public String getTipoEvento() {
-		return tipoEvento;
-	}
-	/**
-	 * Método que seta o tipo do Evento.
-	 * @param tipoEvento Tipo do Evento
-	 */
 	
-	public void setTipoEvento(String tipoEvento) {
-		this.tipoEvento = tipoEvento;
-	}
-	
-	/**
-	 * Método que retorna o nome do Grupo do Host do Evento.
-	 * @return String
-	 */
-	public String getNomeGrupoHost() {
-		return nomeGrupoHost;
-	}
-	
-	/**
-	 * Método que seta o nome do Grupo do Host do Evento.
-	 * @param grupoHost O nome da Grupo do Host.
-	 */
-	public void setGrupoHost(String grupoHost) {
-		this.nomeGrupoHost = grupoHost;
-	}
 	
 	
 	

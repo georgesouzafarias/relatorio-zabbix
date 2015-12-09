@@ -12,6 +12,7 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.jus.tjrr.zabbix.dao.ZabbixDao;
+import br.jus.tjrr.zabbix.model.FiltroEventos;
 import br.jus.tjrr.zabbix.model.Host;
 
 @Controller
@@ -20,6 +21,7 @@ public class ZabbixController {
 	private Result result;
 	private ZabbixDao dao;	
 	private String groupid = "0";
+
 
 	@Inject
 	public ZabbixController(Result result, ZabbixDao dao) {
@@ -30,20 +32,15 @@ public class ZabbixController {
 	public ZabbixController() {
 		this(null,null);
 	}
+	
+
 
 	@Get("/")
-	public void index(String grupid) {
-		
+	public void index(String grupid) {		
 		result.include("grupoLista", dao.listGrupos()).include("hostlista", dao.listHost(groupid));
 	}
 
 	
-	@Post
-	public ArrayList<Host> listaHost(String grupoid) {	
-		return dao.listHost(groupid);		
-		//result.redirectTo(this).index(grupoid);
-		
-	}
 	
     @Get("/host")
     public void getHosts(String grupoid) {      
@@ -53,10 +50,18 @@ public class ZabbixController {
 
     }
 	
-	
-	/*@Get
-	public void lista() {
-		result.include("grupoLista", dao.listGrupos());
+		
+	@Post
+	public void listarEventos(FiltroEventos filtroEventos) {
+		/*
+		System.out.println(filtroEventos.getIdGrupo());
+		System.out.println(filtroEventos.getIdHost());
+		System.out.println(filtroEventos.getPeriodoInicial());
+		System.out.println(filtroEventos.getPeriodoFinal());
+		System.out.println(filtroEventos.getPeriodoInicialConvertido());
+		System.out.println(filtroEventos.getPeriodoFinalConvertido());
+		*/
+		result.include("listaDeEventos", dao.listaEvento(filtroEventos));
 	}
-	*/
+	
 }
