@@ -36,7 +36,7 @@ public class ZabbixController {
 
 
 	@Get("/")
-	public void index(String grupid) {		
+	public void index() {		
 		result.include("grupoLista", dao.listGrupos()).include("hostlista", dao.listHost(groupid));
 	}
 

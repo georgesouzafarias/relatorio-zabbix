@@ -1,6 +1,9 @@
 package br.jus.tjrr.zabbix.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import javax.enterprise.context.RequestScoped;
 
@@ -11,13 +14,15 @@ import br.jus.tjrr.zabbix.model.Evento;
 import br.jus.tjrr.zabbix.model.FiltroEventos;
 import br.jus.tjrr.zabbix.model.GrupoHost;
 import br.jus.tjrr.zabbix.model.Host;
+import br.jus.tjrr.zabbix.model.Trigger;
 import br.jus.tjrr.zabbix.utils.DefaultZabbixApi;
 import br.jus.tjrr.zabbix.utils.Request;
 import br.jus.tjrr.zabbix.utils.RequestBuilder;
+import br.jus.tjrr.zabbix.utils.Utilitarios;
 
 public class ZabbixDao {
 
-	// private final String url = "http://10.50.1.16/api_jsonrpc.php";
+	//private final String url = "http://10.50.1.16/api_jsonrpc.php";
 	private final String url = "http://200.222.41.3:1502/api_jsonrpc.php";
 
 	// private final String user = "";
@@ -76,21 +81,25 @@ public class ZabbixDao {
 			host.setNomeHost((String) item.get("name"));
 			host.setHostId((String) item.get("hostid"));
 			host.setGrupoHost(groupid);
-
 			listaHost.add(host);
 		}
-
-		//zabbixApi.destory();
+		
 		return listaHost;
 
 	}
 
 	public ArrayList<Evento> listaEvento(FiltroEventos filtroEvento) {
 
-		ArrayList<Evento> listaEvento = new ArrayList<>();
+		ArrayList<Evento> listaEventoFinal = new ArrayList<>();
+		ArrayList<Evento>  listaEvento = new ArrayList<>();
 
-		Request getRequest = RequestBuilder.newBuilder().method("event.get").paramEntry("groupids", filtroEvento.getIdGrupo()).paramEntry("hostids", filtroEvento.getIdHost())
-				.paramEntry("time_from", filtroEvento.getPeriodoInicialConvertido()).paramEntry("time_till", filtroEvento.getPeriodoFinalConvertido()).paramEntry("value", 1).build();
+		Request getRequest = RequestBuilder.newBuilder().method("event.get")
+				.paramEntry("groupids", filtroEvento.getIdGrupo())
+				.paramEntry("hostids", filtroEvento.getIdHost())
+				.paramEntry("time_from", filtroEvento.getPeriodoInicialConvertido())
+				.paramEntry("time_till", filtroEvento.getPeriodoFinalConvertido())
+				.paramEntry("sortorder", "DESC")				
+				.build();
 
 		JSONObject getResponse = zabbixApi.call(getRequest);
 
@@ -100,19 +109,67 @@ public class ZabbixDao {
 			Evento evento = new Evento();
 			JSONObject item = (JSONObject) resultado.get(i);
 			
-			evento.setIdEvento(item.getIntValue("eventid"));
-			evento.setDataEvento(item.getTimestamp("clock"));
-			evento.setDuracaoEvento(item.getIntValue("ns"));		
+			evento.setIdEvento(item.getIntValue("eventid"));	
+			evento.setDataEHoraDoEvento(item.getLong("clock"));	
+			evento.setTriggerId(item.getString("objectid"));
+			evento.setValue(item.getIntValue("value"));	
 			
-			//evento.setHostId((String) item.get("hostid"));
-			//evento.setGrupoHost(groupid);
-
+	
 			listaEvento.add(evento);
 		}
-
+		
+		Collections.sort(listaEvento);
+		
+		Utilitarios util = new Utilitarios();
+		for ( Evento evento : listaEvento){
+			for (Evento eventoSeguinte : listaEvento){
+				if (evento.equals(eventoSeguinte)){
+					eventoSeguinte.setDuracaoDoEvento(util.converteDataParaDateFormatESubtrai(evento.getDataEHoraDoEvento(), eventoSeguinte.getDataEHoraDoEvento()));			
+				}
+			}				
+		}
+		
+		
+		for ( Evento evento : listaEvento){
+			if (evento.getValue() == 1) {
+				System.out.println(listaEventoFinal.add(evento));
+				
+			}
+		}
+				
+				
 		zabbixApi.destory();
-		return listaEvento;
+		return listaEventoFinal;
 
 	}
 
+
+	/*
+	public void listaTrigger() {
+		ArrayList<Trigger> listaTrigger = new ArrayList<>();
+		
+		
+		
+		Request getRequest = RequestBuilder.newBuilder().method("trigger.get")
+				.paramEntry("triggerids", triggerId)				
+				.build();
+		JSONObject getResponse = zabbixApi.call(getRequest);
+		JSONArray resultado = getResponse.getJSONArray("result");	
+		
+		for (int i = 0; i < resultado.size(); i++) {			
+			JSONObject item = (JSONObject) resultado.get(i);
+			System.out.println(item.getString("triggerid"));			
+			Utilitarios util = new Utilitarios();
+			System.out.println(util.converteDataParaDateFormat(item.getLong("lastchange")));					
+			System.out.println(item.getString("description"));
+			System.out.println(item.getString("value"));
+			System.out.println();
+			System.out.println();
+			
+			
+			
+		}
+		
+	} */
+	
 }

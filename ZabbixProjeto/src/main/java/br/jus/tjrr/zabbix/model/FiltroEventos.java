@@ -1,11 +1,11 @@
 package br.jus.tjrr.zabbix.model;
 
-import java.security.Timestamp;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import br.jus.tjrr.zabbix.utils.Utilitarios;
 
 public class FiltroEventos {
 
@@ -21,6 +21,8 @@ public class FiltroEventos {
 
 	private String idGrupo;
 	private String idHost;
+	
+	Utilitarios util = new Utilitarios();
 
 	public int getDuracaoMinima() {
 		return duracaoMinima;
@@ -35,7 +37,7 @@ public class FiltroEventos {
 	}
 
 	public void setPeriodoInicial(String periodoInicial) {
-		this.periodoInicialConvertido = this.converteData(periodoInicial);
+		this.periodoInicialConvertido = util.converteDataParaLong(periodoInicial);
 		this.periodoInicial = periodoInicial;
 	}
 
@@ -44,7 +46,7 @@ public class FiltroEventos {
 	}
 
 	public void setPeriodoFinal(String periodoFinal) {
-		this.periodoFinalConvertido = this.converteData(periodoFinal);
+		this.periodoFinalConvertido = util.converteDataParaLong(periodoFinal);
 		this.periodoFinal = periodoFinal;
 
 	}
@@ -68,19 +70,7 @@ public class FiltroEventos {
 	public ArrayList<Evento> buscarEventos(FiltroEventos filtro) {
 		return null;
 	}
-
-	public Long converteData(String data) {
-		Date dataCovertida = null;
-		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			dataCovertida = dataFormatada.parse(data);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}					
-			
-	        
-		return dataCovertida.getTime() / 1000L;
-	}
+	
 
 	public Long getPeriodoInicialConvertido() {
 		return periodoInicialConvertido;
