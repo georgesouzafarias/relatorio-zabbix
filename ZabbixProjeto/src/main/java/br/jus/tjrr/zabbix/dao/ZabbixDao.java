@@ -1,15 +1,10 @@
 package br.jus.tjrr.zabbix.dao;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.ConcurrentLinkedDeque;
-
 import javax.enterprise.context.RequestScoped;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-
 import br.jus.tjrr.zabbix.model.Evento;
 import br.jus.tjrr.zabbix.model.FiltroEventos;
 import br.jus.tjrr.zabbix.model.GrupoHost;
@@ -22,7 +17,7 @@ import br.jus.tjrr.zabbix.utils.Utilitarios;
 
 public class ZabbixDao {
 
-	//private final String url = "http://10.50.1.16/api_jsonrpc.php";
+	// private final String url = "http://10.50.1.16/api_jsonrpc.php";
 	private final String url = "http://200.222.41.3:1502/api_jsonrpc.php";
 
 	// private final String user = "";
@@ -83,7 +78,7 @@ public class ZabbixDao {
 			host.setGrupoHost(groupid);
 			listaHost.add(host);
 		}
-		
+
 		return listaHost;
 
 	}
@@ -91,14 +86,21 @@ public class ZabbixDao {
 	public ArrayList<Evento> listaEvento(FiltroEventos filtroEvento) {
 
 		ArrayList<Evento> listaEventoFinal = new ArrayList<>();
-		ArrayList<Evento>  listaEvento = new ArrayList<>();
+		ArrayList<Evento> listaEvento = new ArrayList<>();
+
+		String idGrupo = filtroEvento.getIdGrupo();
+		String nomeGrupo = this.getNomeGrupo(filtroEvento.getIdGrupo());
+
+		String idHost = filtroEvento.getIdHost();
+		String nomeHost = this.getNomeHost(filtroEvento.getIdHost());
+
+		ArrayList<Trigger> listaTrigger = new ArrayList<>();
+		listaTrigger = this.listaTrigger(idHost);
 
 		Request getRequest = RequestBuilder.newBuilder().method("event.get")
-				.paramEntry("groupids", filtroEvento.getIdGrupo())
-				.paramEntry("hostids", filtroEvento.getIdHost())
+				.paramEntry("groupids", filtroEvento.getIdGrupo()).paramEntry("hostids", filtroEvento.getIdHost())
 				.paramEntry("time_from", filtroEvento.getPeriodoInicialConvertido())
-				.paramEntry("time_till", filtroEvento.getPeriodoFinalConvertido())
-				.paramEntry("sortorder", "DESC")				
+				.paramEntry("time_till", filtroEvento.getPeriodoFinalConvertido()).paramEntry("sortorder", "DESC")
 				.build();
 
 		JSONObject getResponse = zabbixApi.call(getRequest);
@@ -108,68 +110,98 @@ public class ZabbixDao {
 		for (int i = 0; i < resultado.size(); i++) {
 			Evento evento = new Evento();
 			JSONObject item = (JSONObject) resultado.get(i);
-			
-			evento.setIdEvento(item.getIntValue("eventid"));	
-			evento.setDataEHoraDoEvento(item.getLong("clock"));	
+
+			evento.setIdEvento(item.getIntValue("eventid"));
+			evento.setDataEHoraDoEvento(item.getLong("clock"));
 			evento.setTriggerId(item.getString("objectid"));
-			evento.setValue(item.getIntValue("value"));	
-			
-	
+			evento.setValue(item.getIntValue("value"));
+			evento.setIdGrupo(idGrupo);
+			evento.setIdHost(idHost);
+			evento.setNomeGrupo(nomeGrupo);
+			evento.setNomeHost(nomeHost);
+
 			listaEvento.add(evento);
 		}
-		
-		Collections.sort(listaEvento);
-		
-		Utilitarios util = new Utilitarios();
-		for ( Evento evento : listaEvento){
-			for (Evento eventoSeguinte : listaEvento){
-				if (evento.equals(eventoSeguinte)){
-					eventoSeguinte.setDuracaoDoEvento(util.converteDataParaDateFormatESubtrai(evento.getDataEHoraDoEvento(), eventoSeguinte.getDataEHoraDoEvento()));			
+
+		for (Evento evento : listaEvento) {
+			for (Trigger trigger : listaTrigger)
+				if (evento.getTriggerId().equals(trigger.getTriggerid())) {
+					evento.setTriggerDescricao(trigger.getDescription());
+					evento.setTriggerPrioridade(trigger.getPrioridade());
 				}
-			}				
 		}
-		
-		
-		for ( Evento evento : listaEvento){
-			if (evento.getValue() == 1) {
-				System.out.println(listaEventoFinal.add(evento));
-				
+
+		Collections.sort(listaEvento);
+
+		Utilitarios util = new Utilitarios();
+		for (Evento evento : listaEvento) {
+			for (Evento eventoSeguinte : listaEvento) {
+				if (evento.equals(eventoSeguinte)) {
+					eventoSeguinte.setDuracaoDoEvento(util.converteDataParaDateFormatESubtrai(
+							evento.getDataEHoraDoEvento(), eventoSeguinte.getDataEHoraDoEvento()));
+				}
 			}
 		}
-				
-				
-		zabbixApi.destory();
+
+		for (Evento evento : listaEvento) {
+			if (evento.getValue() == 1) {
+				if (evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0) {
+					listaEventoFinal.add(evento);
+				}
+			}
+		}	
+
 		return listaEventoFinal;
 
 	}
 
+	public String getNomeGrupo(String idGrupo) {
 
-	/*
-	public void listaTrigger() {
-		ArrayList<Trigger> listaTrigger = new ArrayList<>();
-		
-		
-		
-		Request getRequest = RequestBuilder.newBuilder().method("trigger.get")
-				.paramEntry("triggerids", triggerId)				
+		Request getRequest = RequestBuilder.newBuilder().method("hostgroup.get").paramEntry("groupids", idGrupo)
 				.build();
+
 		JSONObject getResponse = zabbixApi.call(getRequest);
-		JSONArray resultado = getResponse.getJSONArray("result");	
-		
-		for (int i = 0; i < resultado.size(); i++) {			
+
+		JSONArray resultado = getResponse.getJSONArray("result");
+
+		JSONObject item = (JSONObject) resultado.get(0);
+		return item.getString(("name"));
+
+	}
+
+	public String getNomeHost(String idHost) {
+
+		Request getRequest = RequestBuilder.newBuilder().method("host.get").paramEntry("hostids", idHost).build();
+
+		JSONObject getResponse = zabbixApi.call(getRequest);
+
+		JSONArray resultado = getResponse.getJSONArray("result");
+
+		JSONObject item = (JSONObject) resultado.get(0);
+		return item.getString(("host"));
+
+	}
+
+	public ArrayList<Trigger> listaTrigger(String hostId) {
+		ArrayList<Trigger> listaTrigger = new ArrayList<>();
+
+		Request getRequest = RequestBuilder.newBuilder().method("trigger.get").paramEntry("hostids", hostId).build();
+
+		JSONObject getResponse = zabbixApi.call(getRequest);
+		JSONArray resultado = getResponse.getJSONArray("result");
+
+		for (int i = 0; i < resultado.size(); i++) {
 			JSONObject item = (JSONObject) resultado.get(i);
-			System.out.println(item.getString("triggerid"));			
-			Utilitarios util = new Utilitarios();
-			System.out.println(util.converteDataParaDateFormat(item.getLong("lastchange")));					
-			System.out.println(item.getString("description"));
-			System.out.println(item.getString("value"));
-			System.out.println();
-			System.out.println();
-			
-			
-			
+			Trigger trigger = new Trigger();
+			trigger.setTriggerid(item.getString("triggerid"));
+			trigger.setDescription(item.getString("description"));
+			trigger.setPrioridade(item.getString("priority"));
+
+			listaTrigger.add(trigger);
+
 		}
-		
-	} */
-	
+		return listaTrigger;
+
+	}
+
 }

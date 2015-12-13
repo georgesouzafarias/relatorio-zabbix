@@ -40,6 +40,20 @@ public class Utilitarios {
 	}
 
 	
+	public String converteMinutosEmFormatoComparavel(Long time1) {	
+		Long date1 =TimeUnit.MINUTES.toMillis(time1);
+				
+
+		String diferencaFinal = String.format("%02d:%02d:%02d", 
+				TimeUnit.MILLISECONDS.toHours(date1),
+				TimeUnit.MILLISECONDS.toMinutes(date1) -  
+				TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(date1)), // The change is in this line
+				TimeUnit.MILLISECONDS.toSeconds(date1) - 
+				TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(date1)));  
+		
+		return diferencaFinal;
+	}
+	
 	public Long converteDataParaLong(String data) {
 		Date dataCovertida = null;
 		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");

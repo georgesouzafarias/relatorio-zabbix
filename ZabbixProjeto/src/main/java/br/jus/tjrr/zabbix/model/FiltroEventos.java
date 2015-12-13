@@ -1,18 +1,14 @@
 package br.jus.tjrr.zabbix.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 import br.jus.tjrr.zabbix.utils.Utilitarios;
 
 public class FiltroEventos {
 
-	private int duracaoMinima = 4;
-	// private Date periodoInicial;
-	// private Date periodoFinal;
-
+	private Long duracaoMinima = (long) 4;
+	private String duracaoMinimaConvertida;
 	private String periodoInicial;
 	private String periodoFinal;
 
@@ -23,12 +19,18 @@ public class FiltroEventos {
 	private String idHost;
 	
 	Utilitarios util = new Utilitarios();
+	
+	public FiltroEventos() {
+		this.duracaoMinimaConvertida = util.converteMinutosEmFormatoComparavel(this.duracaoMinima);
+	}
+	
+	
 
-	public int getDuracaoMinima() {
+	public Long getDuracaoMinima() {
 		return duracaoMinima;
 	}
 
-	public void setDuracaoMinima(int duracaoMinima) {
+	public void setDuracaoMinima(Long duracaoMinima) {
 		this.duracaoMinima = duracaoMinima;
 	}
 
@@ -79,5 +81,10 @@ public class FiltroEventos {
 	public Long getPeriodoFinalConvertido() {
 		return periodoFinalConvertido;
 	}
+
+	public String getDuracaoMinimaConvertida() {
+		return duracaoMinimaConvertida;
+	}
+
 
 }

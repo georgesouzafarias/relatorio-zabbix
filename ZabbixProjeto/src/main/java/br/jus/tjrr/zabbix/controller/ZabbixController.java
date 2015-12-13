@@ -1,11 +1,7 @@
 package br.jus.tjrr.zabbix.controller;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
-import javax.validation.Valid;
-
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
@@ -52,15 +48,7 @@ public class ZabbixController {
 	
 		
 	@Post
-	public void listarEventos(FiltroEventos filtroEventos) {
-		/*
-		System.out.println(filtroEventos.getIdGrupo());
-		System.out.println(filtroEventos.getIdHost());
-		System.out.println(filtroEventos.getPeriodoInicial());
-		System.out.println(filtroEventos.getPeriodoFinal());
-		System.out.println(filtroEventos.getPeriodoInicialConvertido());
-		System.out.println(filtroEventos.getPeriodoFinalConvertido());
-		*/
+	public void listarEventos(FiltroEventos filtroEventos) {		
 		result.include("listaDeEventos", dao.listaEvento(filtroEventos));
 	}
 	

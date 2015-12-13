@@ -5,9 +5,9 @@ public class Trigger {
 	
 	private String triggerid;
 	private String description;
-	private Long lastchange;
-	private int value;
-	
+	private String prioridade;
+		
+		
 	
 	public String getTriggerid() {
 		return triggerid;
@@ -21,17 +21,12 @@ public class Trigger {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Long getLastchange() {
-		return lastchange;
+	public String getPrioridade() {
+		return prioridade;
 	}
-	public void setLastchange(Long lastchange) {
-		this.lastchange = lastchange;
+	public void setPrioridade(String prioridade) {
+		this.prioridade = prioridade;
 	}
-	public int getValue() {
-		return value;
-	}
-	public void setValue(int value) {
-		this.value = value;
-	}
+	
 
 }

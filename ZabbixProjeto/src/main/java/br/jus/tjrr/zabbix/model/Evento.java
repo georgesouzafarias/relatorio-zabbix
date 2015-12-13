@@ -1,9 +1,5 @@
 package br.jus.tjrr.zabbix.model;
 
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import br.jus.tjrr.zabbix.utils.Utilitarios;
 
 
@@ -17,10 +13,57 @@ import br.jus.tjrr.zabbix.utils.Utilitarios;
 public class Evento implements Comparable<Evento>{
 
 	private int idEvento;
+	private String idGrupo;
+	private String nomeGrupo;
+	private String idHost;
+	private String nomeHost;	
 	private Long dataEHoraDoEvento;
 	private String dataDoEventoConvertida;	
 	private String duracaoDoEvento;
 	private String triggerId;
+	private String triggerDescricao;
+	private String triggerPrioridade;
+	
+	public String getIdGrupo() {
+		return idGrupo;
+	}
+
+	public void setIdGrupo(String idGrupo) {
+		this.idGrupo = idGrupo;
+	}
+
+	public String getNomeGrupo() {
+		return nomeGrupo;
+	}
+
+	public void setNomeGrupo(String nomeGrupo) {
+		this.nomeGrupo = nomeGrupo;
+	}
+
+	public String getIdHost() {
+		return idHost;
+	}
+
+	public void setIdHost(String idHost) {
+		this.idHost = idHost;
+	}
+
+	public String getNomeHost() {
+		return nomeHost;
+	}
+
+	public void setNomeHost(String nomeHost) {
+		this.nomeHost = nomeHost;
+	}
+
+	public String getTriggerDescricao() {
+		return triggerDescricao;
+	}
+
+	public void setTriggerDescricao(String triggerDescricao) {
+		this.triggerDescricao = triggerDescricao;
+	}
+
 	private int value;
 
 	/**
@@ -125,6 +168,14 @@ public class Evento implements Comparable<Evento>{
 			return +1;
 		}
 		return 0;
+	}
+
+	public String getTriggerPrioridade() {
+		return triggerPrioridade;
+	}
+
+	public void setTriggerPrioridade(String triggerPrioridade) {
+		this.triggerPrioridade = triggerPrioridade;
 	}
 
 	
