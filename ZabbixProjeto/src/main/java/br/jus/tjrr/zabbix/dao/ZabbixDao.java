@@ -2,9 +2,10 @@ package br.jus.tjrr.zabbix.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.enterprise.context.RequestScoped;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
 import br.jus.tjrr.zabbix.model.Evento;
 import br.jus.tjrr.zabbix.model.FiltroEventos;
 import br.jus.tjrr.zabbix.model.GrupoHost;
@@ -23,18 +24,18 @@ public class ZabbixDao {
 	// private final String user = "";
 	// private final String senha = "";
 	DefaultZabbixApi zabbixApi = new DefaultZabbixApi(url);
+	
+	private ArrayList<Evento> listaEvento;
 
 	public ZabbixDao() {
-		this.zabbixApi.init();
-		// this.zabbixApi.login(user, senha);
-		this.zabbixApi.login();
-
+		zabbixApi.init();
+		// zabbixApi.login(user, senha);
+		zabbixApi.login();		
 	}
-
-	@RequestScoped
 
 	public ArrayList<GrupoHost> listGrupos() {
 		ArrayList<GrupoHost> listaGrupos = new ArrayList<>();
+		;
 
 		Request getRequest = RequestBuilder.newBuilder().method("hostgroup.get").paramEntry("monitored_hosts", true)
 				.paramEntry("real_hosts", true).build();
@@ -59,7 +60,6 @@ public class ZabbixDao {
 	}
 
 	public ArrayList<Host> listHost(String groupid) {
-
 		ArrayList<Host> listaHost = new ArrayList<>();
 
 		Request getRequest = RequestBuilder.newBuilder().method("host.get").paramEntry("groupids", groupid)
@@ -85,17 +85,17 @@ public class ZabbixDao {
 
 	public ArrayList<Evento> listaEvento(FiltroEventos filtroEvento) {
 
-		ArrayList<Evento> listaEventoFinal = new ArrayList<>();
-		ArrayList<Evento> listaEvento = new ArrayList<>();
+		ArrayList<Evento> eventos = new ArrayList<>();
+		listaEvento = new ArrayList<Evento>();
 
 		String idGrupo = filtroEvento.getIdGrupo();
-		String nomeGrupo = this.getNomeGrupo(filtroEvento.getIdGrupo());
+		String nomeGrupo = getNomeGrupo(filtroEvento.getIdGrupo());
 
 		String idHost = filtroEvento.getIdHost();
-		String nomeHost = this.getNomeHost(filtroEvento.getIdHost());
+		String nomeHost = getNomeHost(filtroEvento.getIdHost());
 
 		ArrayList<Trigger> listaTrigger = new ArrayList<>();
-		listaTrigger = this.listaTrigger(idHost);
+		listaTrigger = listaTrigger(idHost);
 
 		Request getRequest = RequestBuilder.newBuilder().method("event.get")
 				.paramEntry("groupids", filtroEvento.getIdGrupo()).paramEntry("hostids", filtroEvento.getIdHost())
@@ -120,10 +120,10 @@ public class ZabbixDao {
 			evento.setNomeGrupo(nomeGrupo);
 			evento.setNomeHost(nomeHost);
 
-			listaEvento.add(evento);
+			eventos.add(evento);
 		}
 
-		for (Evento evento : listaEvento) {
+		for (Evento evento : eventos) {
 			for (Trigger trigger : listaTrigger)
 				if (evento.getTriggerId().equals(trigger.getTriggerid())) {
 					evento.setTriggerDescricao(trigger.getDescription());
@@ -131,11 +131,11 @@ public class ZabbixDao {
 				}
 		}
 
-		Collections.sort(listaEvento);
+		Collections.sort(eventos);
 
 		Utilitarios util = new Utilitarios();
-		for (Evento evento : listaEvento) {
-			for (Evento eventoSeguinte : listaEvento) {
+		for (Evento evento : eventos) {
+			for (Evento eventoSeguinte : eventos) {
 				if (evento.equals(eventoSeguinte)) {
 					eventoSeguinte.setDuracaoDoEvento(util.converteDataParaDateFormatESubtrai(
 							evento.getDataEHoraDoEvento(), eventoSeguinte.getDataEHoraDoEvento()));
@@ -143,15 +143,17 @@ public class ZabbixDao {
 			}
 		}
 
-		for (Evento evento : listaEvento) {
+		
+		for (Evento evento : eventos) {
 			if (evento.getValue() == 1) {
-				if (evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0) {
-					listaEventoFinal.add(evento);
+				if (evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0) {					
+					this.listaEvento.add(evento);
 				}
 			}
-		}	
+		}		
 
-		return listaEventoFinal;
+		// this.zabbixApi.destory();
+		return this.listaEvento;
 
 	}
 
@@ -201,6 +203,17 @@ public class ZabbixDao {
 
 		}
 		return listaTrigger;
+
+	}
+
+	public ArrayList<Evento> removeEventosSelecionados(String[] index) {
+		for (int i = 0, x=0; i < index.length; i++) {		
+			int j = Integer.parseInt(index[i]);			
+			this.listaEvento.remove(j-x);
+			x++;
+		}
+
+		return this.listaEvento;
 
 	}
 

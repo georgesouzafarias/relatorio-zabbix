@@ -10,7 +10,10 @@ import java.util.ArrayList;
 
 public class RegistroDeEventos {
 	
-	private ArrayList<Evento> eventos = new ArrayList<>();	
+	private ArrayList<Evento> eventos = new ArrayList<>();
+	
+	
+	
 	
 	/**
 	 *  Método reponsável por adicionar os eventos selecionados.

@@ -16,7 +16,7 @@
 		</ul>
 
 	</nav>
-	<div class="container thumbnail jumbotron bg-success">
+	<div class="container-fluid table-responsive">
 		<main class="col-sm-8 thumbnail text-center ">
 	
 		

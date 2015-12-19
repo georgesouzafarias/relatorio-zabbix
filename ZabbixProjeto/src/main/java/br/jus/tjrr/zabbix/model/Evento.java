@@ -12,7 +12,7 @@ import br.jus.tjrr.zabbix.utils.Utilitarios;
 
 public class Evento implements Comparable<Evento>{
 
-	private int idEvento;
+	private int idEvento;	
 	private String idGrupo;
 	private String nomeGrupo;
 	private String idHost;
