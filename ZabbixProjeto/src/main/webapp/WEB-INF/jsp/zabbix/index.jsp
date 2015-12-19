@@ -5,7 +5,7 @@
 
 <div class="bg-success center-block">
 	<form class="form-horizontal"
-		action=" <c:url value='/zabbix/listarEventos'/>" method="post">
+		action=" <c:url value='/zabbix/filtrarEventos'/>" method="post">
 
 		<div class="form-group">
 			<label for="grupo" class="text-left"> Selecione um Grupo</label>

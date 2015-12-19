@@ -4,24 +4,44 @@
 
 <h1>Listagem de Eventos</h1>
 
-	<table class="table table-stripped table-hover table-bordered">
+<form class="form-horizontal"
+		action=" <c:url value='/removerhosts'/>" method="post">
+
+	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th>Id do Evento</th>
+				<th>Selecionar</th>				
+				<th>Id Evento</th>
+				<th>Nome do Grupo</th>
+				<th>Nome do Host</th>
+				<th>Trigger</th>
 				<th>Data do Evento</th>
 				<th>Duracão do Evento</th>	
 			</tr>
 		</thead>
 		<tbody>
+			<c:set var="index" value="${0}"></c:set>
 			<c:forEach items="${listaDeEventos}" var="evento">
 				<tr>
-					<td>${evento.idEvento}</td>
+					<td><input type="checkbox" id="cbox1" name="index" value="${index}"></td>
+					<td>${evento.idEvento}</td>				
+					<td>${evento.nomeGrupo}</td>
+					<td>${evento.nomeHost}</td>
+					<td>${evento.triggerDescricao}</td>
 					<td>${evento.dataDoEventoConvertida}</td>
 					<td>${evento.duracaoDoEvento}</td>
 				</tr>
-
+				<c:set var="index" value="${index+1}"></c:set>
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	<div>
+				<input type="submit" value="Remover Selecionados"
+				class="btn btn-primary btn-lg active">
+		</div>
+	
+	
+	</form>
 
 <c:import url="/WEB-INF/jsp/footer.jsp"></c:import>
