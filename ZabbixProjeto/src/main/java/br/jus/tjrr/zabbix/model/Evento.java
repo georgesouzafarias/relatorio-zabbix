@@ -22,7 +22,7 @@ public class Evento implements Comparable<Evento>{
 	private String duracaoDoEvento;
 	private String triggerId;
 	private String triggerDescricao;
-	private String triggerPrioridade;
+	private int triggerPrioridade;
 	
 	public String getIdGrupo() {
 		return idGrupo;
@@ -170,11 +170,11 @@ public class Evento implements Comparable<Evento>{
 		return 0;
 	}
 
-	public String getTriggerPrioridade() {
+	public int getTriggerPrioridade() {
 		return triggerPrioridade;
 	}
 
-	public void setTriggerPrioridade(String triggerPrioridade) {
+	public void setTriggerPrioridade(int triggerPrioridade) {
 		this.triggerPrioridade = triggerPrioridade;
 	}
 

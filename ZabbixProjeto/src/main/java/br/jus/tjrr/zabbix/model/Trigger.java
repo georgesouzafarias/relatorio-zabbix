@@ -5,7 +5,7 @@ public class Trigger {
 	
 	private String triggerid;
 	private String description;
-	private String prioridade;
+	private int prioridade;
 		
 		
 	
@@ -21,10 +21,10 @@ public class Trigger {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getPrioridade() {
+	public int getPrioridade() {
 		return prioridade;
 	}
-	public void setPrioridade(String prioridade) {
+	public void setPrioridade(int prioridade) {
 		this.prioridade = prioridade;
 	}
 	

@@ -8,6 +8,7 @@ import br.jus.tjrr.zabbix.utils.Utilitarios;
 public class FiltroEventos {
 
 	private Long duracaoMinima = (long) 4;
+	private int prioridadeMinima = 4;
 	private String duracaoMinimaConvertida;
 	private String periodoInicial;
 	private String periodoFinal;
@@ -84,6 +85,18 @@ public class FiltroEventos {
 
 	public String getDuracaoMinimaConvertida() {
 		return duracaoMinimaConvertida;
+	}
+
+
+
+	public int getPrioridadeMinima() {
+		return prioridadeMinima;
+	}
+
+
+
+	public void setPrioridadeMinima(int prioridadeMinima) {
+		this.prioridadeMinima = prioridadeMinima;
 	}
 
 
