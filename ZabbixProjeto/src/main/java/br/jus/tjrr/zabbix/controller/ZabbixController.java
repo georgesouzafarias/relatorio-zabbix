@@ -61,5 +61,10 @@ public class ZabbixController {
 		result.include("listaDeEventos", dao.listaEvento(filtroEventos));
 		result.forwardTo(this).listarEventos();
 	}
+    
+    @Get("/gerarRelatorio")
+    public void gerarRelatorio() {
+		
+	}
 	
 }

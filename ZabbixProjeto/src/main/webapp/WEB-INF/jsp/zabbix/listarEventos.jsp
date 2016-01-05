@@ -39,7 +39,12 @@
 	<div>
 				<input type="submit" value="Remover Selecionados"
 				class="btn btn-primary btn-lg active">
+				
+				<input value="Gerar Relatório" class="btn btn-primary btn-lg active" onclick="document.location = '<c:url value='/gerarRelatorio'/>'"/>
+				
+				
 		</div>
+		
 	
 	
 	</form>
