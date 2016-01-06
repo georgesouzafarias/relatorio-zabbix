@@ -170,8 +170,8 @@ public class ZabbixDao {
 
 		for (Evento evento : eventos) {
 			for (Trigger trigger : listaTrigger)
-				if (evento.getTriggerId().equals(trigger.getTriggerid())) {
-					evento.setTriggerDescricao(trigger.getDescription());
+				if (evento.getTriggerId().equals(trigger.getTriggerid())) {					
+					evento.setTriggerDescricao(trigger.getDescription().replaceAll("\\{HOSTNAME\\}", evento.getNomeHost()));
 					evento.setTriggerPrioridade(trigger.getPrioridade());
 				}
 		}
