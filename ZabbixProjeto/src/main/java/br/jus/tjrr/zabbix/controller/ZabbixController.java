@@ -64,6 +64,7 @@ public class ZabbixController {
     
     @Get("/gerarRelatorio")
     public void gerarRelatorio() {
+    	result.include("listaDeEventos", dao.getListaEvento());
 		
 	}
 	

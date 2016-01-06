@@ -25,13 +25,13 @@ public class ZabbixDao {
 	// private final String user = "";
 	// private final String senha = "";
 	DefaultZabbixApi zabbixApi = new DefaultZabbixApi(url);
-	
+
 	private ArrayList<Evento> listaEvento;
 
 	public ZabbixDao() {
 		zabbixApi.init();
 		// zabbixApi.login(user, senha);
-		zabbixApi.login();		
+		zabbixApi.login();
 	}
 
 	public ArrayList<GrupoHost> listGrupos() {
@@ -84,16 +84,13 @@ public class ZabbixDao {
 
 	}
 
-
 	public ArrayList<Trigger> listaTrigger(String hostId) {
 		ArrayList<Trigger> listaTrigger = new ArrayList<>();
 
-		Request getRequest = RequestBuilder.newBuilder().method("trigger.get")
-				.paramEntry("hostids", hostId)
-				//.paramEntry("min_severity", 3)
+		Request getRequest = RequestBuilder.newBuilder().method("trigger.get").paramEntry("hostids", hostId)
+				// .paramEntry("min_severity", 3)
 				.build();
-				
-		
+
 		JSONObject getResponse = zabbixApi.call(getRequest);
 		JSONArray resultado = getResponse.getJSONArray("result");
 
@@ -111,7 +108,6 @@ public class ZabbixDao {
 
 	}
 
-
 	public ArrayList<Evento> listaEvento(FiltroEventos filtroEvento) {
 
 		ArrayList<Evento> eventos = new ArrayList<>();
@@ -125,46 +121,37 @@ public class ZabbixDao {
 
 		ArrayList<Trigger> listaTrigger = new ArrayList<>();
 		listaTrigger = listaTrigger(idHost);
-		
-		List<String> listaEventoId = new ArrayList<>();		
-		for (Trigger trigger : listaTrigger){
+
+		List<String> listaEventoId = new ArrayList<>();
+		for (Trigger trigger : listaTrigger) {
 			listaEventoId.add(trigger.getTriggerid());
 		}
-		//Cria um vertor com os filtros necessarios
-		String sortfield[] = { "clock", "eventid"};
-		Request getRequest = RequestBuilder.newBuilder().method("event.get")				
-				.paramEntry("hostids", filtroEvento.getIdHost())
-				.paramEntry("obejectid", listaEventoId)
+		// Cria um vertor com os filtros necessarios
+		String sortfield[] = { "clock", "eventid" };
+		Request getRequest = RequestBuilder.newBuilder().method("event.get")
+				.paramEntry("hostids", filtroEvento.getIdHost()).paramEntry("obejectid", listaEventoId)
 				.paramEntry("time_from", filtroEvento.getPeriodoInicialConvertido())
 				.paramEntry("time_till", filtroEvento.getPeriodoFinalConvertido())
-				.paramEntry("output", "eventid, obcjectid")
-				.paramEntry("sortfield", sortfield)
-				.paramEntry("sortorder", "DESC")				
-				.build();
-		
-		
+				.paramEntry("output", "eventid, obcjectid").paramEntry("sortfield", sortfield)
+				.paramEntry("sortorder", "DESC").build();
+
 		JSONObject getResponse = zabbixApi.call(getRequest);
 		JSONArray resultado = getResponse.getJSONArray("result");
-		
-		//Cria um vetor com todos os eventosid recebidos
+
+		// Cria um vetor com todos os eventosid recebidos
 		ArrayList<String> eventoid = new ArrayList<>();
-		
-		for (int i=0; i < resultado.size() ; i++){			
-			JSONObject item = (JSONObject) resultado.get(i);			
-			eventoid.add(item.getString("eventid"));		
+
+		for (int i = 0; i < resultado.size(); i++) {
+			JSONObject item = (JSONObject) resultado.get(i);
+			eventoid.add(item.getString("eventid"));
 		}
-		
-				
-		getRequest = RequestBuilder.newBuilder().method("event.get")				
-				.paramEntry("eventids", eventoid)		
-				.paramEntry("sortfield", sortfield)
-				.paramEntry("sortorder", "DESC")				
-				.build();
-		
+
+		getRequest = RequestBuilder.newBuilder().method("event.get").paramEntry("eventids", eventoid)
+				.paramEntry("sortfield", sortfield).paramEntry("sortorder", "DESC").build();
+
 		getResponse = zabbixApi.call(getRequest);
 		resultado = getResponse.getJSONArray("result");
-		
-		
+
 		for (int i = 0; i < resultado.size(); i++) {
 			Evento evento = new Evento();
 			JSONObject item = (JSONObject) resultado.get(i);
@@ -189,33 +176,33 @@ public class ZabbixDao {
 				}
 		}
 
-		//Collections.sort(eventos);
+		// Collections.sort(eventos);
 
 		Utilitarios util = new Utilitarios();
-		
+
 		for (Evento evento : eventos) {
 			for (Evento eventoSeguinte : eventos) {
 				if (evento.equals(eventoSeguinte)) {
-					//Analisar
+					// Analisar
 					eventoSeguinte.setDuracaoDoEvento(util.converteDataParaDateFormatESubtrai(
 							evento.getDataEHoraDoEvento(), eventoSeguinte.getDataEHoraDoEvento()));
 				}
 			}
 		}
-			
 
-		//Faz todos os Filtros Necessários
+		// Faz todos os Filtros Necessários
 		for (Evento evento : eventos) {
-			if (evento.getValue() == 1) {				
-				if ((evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0) && (evento.getTriggerPrioridade() >= filtroEvento.getPrioridadeMinima())) {					
-					this.listaEvento.add(evento);
+			if (evento.getValue() == 1) {
+				if ((evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0)
+						&& (evento.getTriggerPrioridade() >= filtroEvento.getPrioridadeMinima())) {
+					this.getListaEvento().add(evento);
 				}
 			}
-		}		
+		}
 
 		// this.zabbixApi.destory();
-		return this.listaEvento;	
-		
+		return this.getListaEvento();
+
 	}
 
 	public String getNomeGrupo(String idGrupo) {
@@ -244,16 +231,20 @@ public class ZabbixDao {
 		return item.getString(("host"));
 
 	}
-	
-public ArrayList<Evento> removeEventosSelecionados(String[] index) {
-		for (int i = 0, x=0; i < index.length; i++) {		
-			int j = Integer.parseInt(index[i]);			
-			this.listaEvento.remove(j-x);
+
+	public ArrayList<Evento> removeEventosSelecionados(String[] index) {
+		for (int i = 0, x = 0; i < index.length; i++) {
+			int j = Integer.parseInt(index[i]);
+			this.getListaEvento().remove(j - x);
 			x++;
 		}
 
-		return this.listaEvento;
+		return this.getListaEvento();
 
+	}
+
+	public ArrayList<Evento> getListaEvento() {
+		return listaEvento;
 	}
 
 }
