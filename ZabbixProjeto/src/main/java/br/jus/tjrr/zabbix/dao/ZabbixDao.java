@@ -193,10 +193,15 @@ public class ZabbixDao {
 		// Faz todos os Filtros Necessários
 		for (Evento evento : eventos) {
 			if (evento.getValue() == 1) {
-				if ((evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0)
-						&& (evento.getTriggerPrioridade() >= filtroEvento.getPrioridadeMinima())) {
-					this.getListaEvento().add(evento);
+				try {
+					if ((evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0)
+							&& (evento.getTriggerPrioridade() >= filtroEvento.getPrioridadeMinima())) {
+						this.getListaEvento().add(evento);
+					}
+				} catch (NullPointerException e) {
+					System.out.println(e.getMessage());
 				}
+
 			}
 		}
 
