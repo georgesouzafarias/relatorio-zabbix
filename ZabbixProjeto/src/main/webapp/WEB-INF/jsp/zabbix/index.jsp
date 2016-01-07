@@ -9,18 +9,14 @@
 
 		<div class="form-group">
 			<label for="grupo" class="text-left"> Selecione um Grupo</label>
-
-			<div class="col-sm-10">
-
+			<div>
 				<select id="idgrupo" class=".selectpicker"
 					name="filtroEventos.idGrupo">
 					<c:forEach items="${grupoLista}" var="grupo">
 						<option value="${grupo.idGrupo}">${grupo.nomeGrupo}</option>
 						<br />
 					</c:forEach>
-
 				</select>
-
 			</div>
 		</div>
 
@@ -35,20 +31,41 @@
 		</div>
 
 
-		<div>
+		<div class="form-group">
+			<div>
 
-			<label for="host"> Selecione o Periodo Inicial</label><br /> <input
-				type="text" id="calendario_inicial"
-				name="filtroEventos.periodoInicial" data-date-format="dd/mm/yyyy"/>
+				<label for="host"> Selecione o Periodo Inicial</label><br /> <input
+					type="text" id="calendario_inicial"
+					name="filtroEventos.periodoInicial" data-date-format="dd/mm/yyyy" />
 
+			</div>
+
+	<br>
+	
+			<div>
+
+				<label for="host"> Selecione o Periodo Final</label> <br /> <input
+					type="text" id="calendario_final" name="filtroEventos.periodoFinal"
+					data-date-format="dd/mm/yyyy" />
+
+			</div>
 		</div>
-
-
-		<div>
-
-			<label for="host"> Selecione o Periodo Final</label> <br /> <input
-				type="text" id="calendario_final" name="filtroEventos.periodoFinal"  data-date-format="dd/mm/yyyy"/>
-
+		<br>
+		<div class="form-group">
+			<div>
+				<label for="grupo" class="text-left"> Selecione a Serveridade Mínima</label>
+			</div>
+			<div>
+				<select class=".selectpicker" id="host"
+					name="filtroEventos.severidadeMinima">
+					<option>Selecione</option>
+					<option value=1>Informação</option>
+					<option value=2>Atenção</option>
+					<option value=3>Média</option>
+					<option value=4>Alta</option>
+					<option value=5>Desastre</option>
+				</select>
+			</div>
 		</div>
 		<br />
 		<div>
@@ -65,7 +82,8 @@
 
 <script>
 	$(function() {
-		$("#calendario_inicial").datepicker() });
+		$("#calendario_inicial").datepicker()
+	});
 </script>
 
 
@@ -73,7 +91,8 @@
 
 <script>
 	$(function() {
-		$("#calendario_final").datepicker()	});
+		$("#calendario_final").datepicker()
+	});
 </script>
 
 
