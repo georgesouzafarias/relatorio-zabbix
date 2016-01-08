@@ -68,6 +68,15 @@
 			</div>
 		</div>
 		<br />
+		<div class="form-group">
+			<div>
+				<label for="grupo" class="text-left">Informe a duração minima do Evento em Minutos</label>
+			</div>
+			<div>
+				<input type="number" name="filtroEventos.duracaoMinima"><br>
+			</div>
+		</div>
+		<br>
 		<div>
 			<input type="submit" value="Buscar Eventos"
 				class="btn btn-primary btn-lg active">
