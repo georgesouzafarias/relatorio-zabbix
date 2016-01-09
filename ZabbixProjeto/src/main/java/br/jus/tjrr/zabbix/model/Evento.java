@@ -19,7 +19,8 @@ public class Evento implements Comparable<Evento>{
 	private String nomeHost;	
 	private Long dataEHoraDoEvento;
 	private String dataDoEventoConvertida;	
-	private String duracaoDoEvento;
+	private String duracaoDoEventoCompleta;
+	private long duracaoDoEventoEmMinutos;
 	private String triggerId;
 	private String triggerDescricao;
 	private int triggerPrioridade;
@@ -112,8 +113,8 @@ public class Evento implements Comparable<Evento>{
 	 * 
 	 * @return Um a duração do Evento em Minutos.
 	 */
-	public String getDuracaoDoEvento() {
-		return duracaoDoEvento;
+	public String getDuracaoDoEventoCompleta() {
+		return duracaoDoEventoCompleta;
 	}
 
 	/**
@@ -123,8 +124,8 @@ public class Evento implements Comparable<Evento>{
 	 *            Tempo de duração do Evento em Minutos
 	 */
 
-	public void setDuracaoDoEvento(String duracaoEvento) {		
-		this.duracaoDoEvento = duracaoEvento;
+	public void setDuracaoDoEventoCompleta(String duracaoEvento) {		
+		this.duracaoDoEventoCompleta = duracaoEvento;
 	}
 
 
@@ -176,6 +177,14 @@ public class Evento implements Comparable<Evento>{
 
 	public void setTriggerPrioridade(int triggerPrioridade) {
 		this.triggerPrioridade = triggerPrioridade;
+	}
+
+	public long getDuracaoDoEventoEmMinutos() {
+		return duracaoDoEventoEmMinutos;
+	}
+
+	public void setDuracaoDoEventoEmMinutos(long duracaoDoEventoEmMinutos) {
+		this.duracaoDoEventoEmMinutos = duracaoDoEventoEmMinutos;
 	}
 
 	

@@ -29,7 +29,7 @@
 					<td>${evento.nomeHost}</td>
 					<td>${evento.triggerDescricao}</td>
 					<td>${evento.dataDoEventoConvertida}</td>
-					<td>${evento.duracaoDoEvento}</td>
+					<td>${evento.duracaoDoEventoCompleta}</td>
 				</tr>
 				<c:set var="index" value="${index+1}"></c:set>
 			</c:forEach>

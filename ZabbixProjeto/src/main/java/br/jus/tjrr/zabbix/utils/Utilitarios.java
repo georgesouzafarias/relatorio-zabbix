@@ -38,6 +38,18 @@ public class Utilitarios {
 		
 		return diferencaFinal;
 	}
+	
+	public long converteDataParaDateFormatEmMinutosESubtrai(Long time1, Long time2) {		
+		Date date1 = new Date(time1 * 1000L);
+		Date date2 = new Date(time2 * 1000L);		
+		
+		
+		long diferenca = date1.getTime() - date2.getTime();
+
+		long diferencaFinal = TimeUnit.MILLISECONDS.toMinutes(diferenca);	  
+		
+		return diferencaFinal;
+	}
 
 	
 	public String converteMinutosEmFormatoComparavel(Long time1) {	

@@ -15,7 +15,7 @@
 	<display:column property="nomeHost" title="Nome do Host" />
 	<display:column property="triggerDescricao" title="Trigger" />	
 	<display:column property="dataDoEventoConvertida" title="Data do Evento" />
-	<display:column property="duracaoDoEvento" title="Duracao do Envento" />	
+	<display:column property="duracaoDoEventoEmMinutos" title="Duracao do Envento" />	
 	<display:setProperty name="export.excel.filename" value="zabbix.xls" />
 	<display:setProperty name="export.pdf" value="false" />
 	<display:setProperty name="export.csv.filename" value="zabbix.csv" />

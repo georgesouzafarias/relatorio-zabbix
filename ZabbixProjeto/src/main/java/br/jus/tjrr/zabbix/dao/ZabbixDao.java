@@ -19,7 +19,7 @@ import br.jus.tjrr.zabbix.utils.Utilitarios;
 
 public class ZabbixDao {
 
-	// private final String url = "http://10.50.1.16/api_jsonrpc.php";
+	// private final String url = "http://zabbix.tjrr.jus.br/api_jsonrpc.php";
 	private final String url = "http://200.222.41.3:1502/api_jsonrpc.php";
 
 	// private final String user = "";
@@ -184,8 +184,11 @@ public class ZabbixDao {
 			for (Evento eventoSeguinte : eventos) {
 				if (evento.equals(eventoSeguinte)) {
 					// Analisar
-					eventoSeguinte.setDuracaoDoEvento(util.converteDataParaDateFormatESubtrai(
+					eventoSeguinte.setDuracaoDoEventoCompleta(util.converteDataParaDateFormatESubtrai(
 							evento.getDataEHoraDoEvento(), eventoSeguinte.getDataEHoraDoEvento()));
+					eventoSeguinte.setDuracaoDoEventoEmMinutos(util.converteDataParaDateFormatEmMinutosESubtrai(
+							evento.getDataEHoraDoEvento(), eventoSeguinte.getDataEHoraDoEvento()));
+					
 				}
 			}
 		}
@@ -194,7 +197,7 @@ public class ZabbixDao {
 		for (Evento evento : eventos) {
 			if (evento.getValue() == 1) {
 				try {
-					if ((evento.getDuracaoDoEvento().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0)
+					if ((evento.getDuracaoDoEventoCompleta().compareTo(filtroEvento.getDuracaoMinimaConvertida()) > 0)
 							&& (evento.getTriggerPrioridade() >= filtroEvento.getPrioridadeMinima())) {
 						this.getListaEvento().add(evento);
 					}
