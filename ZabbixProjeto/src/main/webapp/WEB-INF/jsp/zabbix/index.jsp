@@ -113,6 +113,7 @@
 					function() {
 						var id = document.getElementById("idgrupo").value;
 						var uri = "http://www.casa.com.br:8080/zabbixprojeto/host?grupoid=";
+						//var uri = "http://zabbix.tjrr.jus.br:8080/zabbixprojeto/host?grupoid=";
 						var url = uri.concat(id);
 						var appenddata = '<option>Selecione o Host</option>';
 						$
@@ -135,5 +136,9 @@
 					});
 </script>
 
+<c:forEach items="${errors}" var="erro">
+	${erro.category} - ${erro.message} <br>
+
+ </c:forEach>
 
 <c:import url="/WEB-INF/jsp/footer.jsp"></c:import>

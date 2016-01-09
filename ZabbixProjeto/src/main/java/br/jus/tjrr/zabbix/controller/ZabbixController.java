@@ -2,10 +2,14 @@ package br.jus.tjrr.zabbix.controller;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import br.com.caelum.vraptor.Controller;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.validator.Validator;
 import br.com.caelum.vraptor.view.Results;
 import br.jus.tjrr.zabbix.dao.ZabbixDao;
 import br.jus.tjrr.zabbix.model.FiltroEventos;
@@ -15,18 +19,20 @@ import br.jus.tjrr.zabbix.model.FiltroEventos;
 public class ZabbixController {
 
 	private final Result result;
-	private final ZabbixDao dao;	
+	private final ZabbixDao dao;
+	private final Validator validator;	
 	//private String groupid = "0";
 	
 
 	@Inject
-	public ZabbixController(Result result, ZabbixDao dao) {
+	public ZabbixController(Result result, ZabbixDao dao, Validator validator) {
 		this.dao = dao;
-		this.result = result;		
+		this.result = result;
+		this.validator = validator;		
 	}
 
 	public ZabbixController() {
-		this(null,null);
+		this(null,null, null);
 	}
 	
 
@@ -57,7 +63,10 @@ public class ZabbixController {
 	}
 		
     @Post
-	public void filtrarEventos(FiltroEventos filtroEventos) {		
+	public void filtrarEventos(@NotNull @Valid FiltroEventos filtroEventos) {	
+    	
+    	validator.onErrorForwardTo(this).index();
+    	
 		result.include("listaDeEventos", dao.listaEvento(filtroEventos));
 		result.forwardTo(this).listarEventos();
 	}
