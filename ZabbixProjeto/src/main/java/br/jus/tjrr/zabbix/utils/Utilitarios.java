@@ -46,7 +46,11 @@ public class Utilitarios {
 		
 		long diferenca = date1.getTime() - date2.getTime();
 
-		long diferencaFinal = TimeUnit.MILLISECONDS.toMinutes(diferenca);	  
+		long diferencaFinal = TimeUnit.MILLISECONDS.toMinutes(diferenca);
+				  
+		if (TimeUnit.MILLISECONDS.toSeconds(diferenca) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diferenca)) > 30){
+			diferencaFinal++;
+		}		
 		
 		return diferencaFinal;
 	}
